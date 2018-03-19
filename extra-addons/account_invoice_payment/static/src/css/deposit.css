@@ -1,0 +1,300 @@
+.ref_customer {
+    position: relative;
+    width: 700px;
+    height: 40px;
+    left:295px;
+    top: 0px;
+}
+
+.carre {
+  position:absolate;
+  width:40px;
+  height:40px;
+  border: 2px solid gray;
+  display: inline-block;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 12px;
+  font-weight: normal;
+  color: gray;
+  text-align: center;
+
+}
+
+.carre_no_left {
+  position:absolate;
+  width:40px;
+  height:40px;
+  border-top-style: solid;
+  border-right-style: solid;
+  border-bottom-style: solid;
+  border-color: gray;
+  border-width: 2px;
+  display: inline-block;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 12px;
+  font-weight: normal;
+  color: gray;
+  text-align: center;
+  }
+
+.p {
+  position:relative;
+  top:5px;
+  display: inline-block;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 13px;
+  font-weight: bold;
+  color: gray;
+}
+
+.bank_agency {
+    position: relative;
+    top: 5px;
+    left:95px;
+    width: 900px;
+}
+
+.bank_agency_name {
+  position:relative;
+  width:530px;
+  height:40px;
+  left:40px;
+  border: 2px solid gray;
+  display: inline-block;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 12px;
+  font-weight: normal;
+  color: gray;
+  text-align: center;
+}
+
+.account_number {
+    position: relative;
+    top: 20px;
+    left:120px;
+    width: 500px;
+}
+
+.date {
+    position: relative;
+    top: 35px;
+    left:225px;
+    width: 500px;
+}
+
+.name {
+    position: relative;
+    top: 70px;
+    left:120px;
+    width: 500px;
+}
+
+.amount_total {
+    position: relative;
+    top: 120px;
+    left:190px;
+    width: 700px;
+}
+
+.number_lcn {
+    position: relative;
+    top: 50px;
+    left:770px;
+    width: 170px;
+}
+
+.plcn {
+  position:relative;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 13px;
+  font-weight: bold;
+  color: gray;
+  text-align: center;
+}
+
+.reserved_bank {
+  position: relative;
+  background-color: #ffffff;
+  width: 310px;
+  height:170px;
+  padding: 10px;
+  border: 2px solid gray;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  top: -220px;
+  left:620px;
+
+}
+
+.legend {
+  font-family: "Times New Roman", Times, serif;
+  color: gray;
+  width:60%;
+  text-align:center;
+  font-weight:bold;
+  font-size:13;
+}
+
+.carre_reserved_bank {
+  position:absolate;
+  width:30px;
+  height:30px;
+  border: 2px solid gray;
+  display: inline-block;
+}
+
+.p_reserved_bank {
+  position:relative;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 13px;
+  font-weight: bold;
+  color: gray;
+  display: inline-block;
+  top: -5px;
+}
+
+.cutoff {
+  position:absolate;
+  top:150px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 13px;
+  font-weight: bold;
+  color: gray;
+  display: inline-block;
+}
+
+.namecustomer {
+  position:relative;
+  top:50px;
+}
+
+
+.pdepositlcn {
+  position:relative;
+  top:-15px;
+  display: inline-block;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 13px;
+  font-weight: bold;
+  color: gray;
+  left:10px;
+}
+
+.carre_ref_deposit {
+  position:fixed;
+  width:160px;
+  height:45px;
+  border-top-style: solid;
+  border-right-style: solid;
+  border-left-style: solid;
+  border-color: gray;
+  border-width: 2px;
+  display: inline-block;
+  font-family: "FreeMono";
+  font-size: 16px;
+  font-weight: bold;
+  color: gray;
+  top:520px;
+  left:785px;
+}
+
+.table_lcn {
+  position:relative;
+  width:929px;
+  top:30px;
+}
+
+.th {
+  border: 2px solid gray;
+  font-family: "Times New Roman", Times, serif;
+  height:30px;
+  font-size: 13px;
+  font-weight: bold;
+  text-align:center;
+  color:gray;
+  vertical-align: middle;
+  background:lightgray;
+}
+
+.lcn_tbody {
+  position:relative;
+  border: 2px solid gray;
+}
+
+.td {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-color: gray;
+  border-width: 2px;
+  font-family: "Times New Roman", Times, serif;
+  height:30px;
+  font-size: 13px;
+  font-weight: normal;
+  color:gray;
+  vertical-align: middle;
+}
+
+.reserved_bank_cheak {
+  position: relative;
+  width: 310px;
+  height:100px;
+  padding: 10px;
+  top: -260px;
+  left:680px;
+}
+
+.name_cheak {
+    position: relative;
+    top: 70px;
+    left:-5px;
+    width: 500px;
+}
+
+.ref_customer_cheak {
+    position: relative;
+    width: 700px;
+    height: 40px;
+    left:420px;
+    top: 30px;
+}
+
+.namecustomercheck {
+  position:relative;
+  top:40px;
+}
+
+.pcheck {
+  position:relative;
+  top:-5px;
+  display: inline-block;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 13px;
+  font-weight: bold;
+  color: gray;
+  left:20px;
+}
+
+.carre_ref_deposit_check {
+  position:fixed;
+  width:175px;
+  height:45px;
+  border-top-style: solid;
+  border-right-style: solid;
+  border-left-style: solid;
+  border-color: gray;
+  border-width: 2px;
+  font-family: "FreeMono";
+  font-size: 16px;
+  font-weight: bold;
+  color: gray;
+  top:445px;
+  left:850px;
+  vertical-align: middle;
+}
+
+.table_check {
+  position:relative;
+  width:90%;
+  top:30px;
+  left:15px;
+}
