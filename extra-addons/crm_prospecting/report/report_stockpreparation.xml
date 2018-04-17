@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="report_preparation">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                            <br/>
+                            <br/>
+                            <h4>
+                                <strong>Bon de Préparation pour la Réservation N°: </strong><span t-field="o.name"/>
+                            </h4>
+                            <br/>
+                            <br/>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th><strong>Client</strong></th>
+                                        <th><strong>Bon de Commande</strong></th>
+                                        <th><strong>KAM</strong></th>
+                                        <th><strong>Date de Livraison</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span t-field="o.partner_id"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="o.sale_order_id"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="o.user_id"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="o.delivery_date"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br/>
+                            <br/>
+                            <table class="table table-condensed">
+                                  <thead>
+                                    <tr>
+                                        <th><strong>Article</strong></th>
+                                        <th><strong>Quantité</strong></th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr t-foreach="o.move_lines" t-as="move">
+                                        <td><span t-field="move.product_id"/></td>
+                                        <td>
+                                            <span t-field="move.product_uom_qty"/> <span t-field="move.product_uom"/>
+                                        </td>
+                                    </tr>
+                                  </tbody>
+                            </table>
+                        </div>
+                    </t>
+                 </t>
+             </t>
+        </template>
+    </data>
+</openerp>
