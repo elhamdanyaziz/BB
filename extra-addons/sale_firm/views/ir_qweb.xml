@@ -1,0 +1,17 @@
+<openerp>
+<data>
+
+    <template id="contact" inherit_id="base.contact">
+        <xpath expr="//address/div" position="after">
+            <div t-if="object.customer_code and 'customer_code' in fields" class="css_editable_mode_hidden">
+                <span itemprop="customer_code" t-esc="object.customer_code"/>
+            </div>
+            <div t-if="object.city_id and 'city_id' in fields" class='css_editable_mode_hidden'>
+                <span itemprop="city_id" t-esc="object.city_id.name"/>
+            </div>
+       </xpath>
+
+    </template>
+
+ </data>
+</openerp>
