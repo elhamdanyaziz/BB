@@ -1,0 +1,1099 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+
+    <data>
+
+        <record id="sales_team.crm_case_section_act" model="ir.actions.act_window">
+            <field name="name">Business Unit</field>
+            <field name="res_model">crm.case.section</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="sales_team.crm_case_section_view_tree"/>
+            <field name="context">{'readonly_by_pass': True}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click here to define a new sales team.
+                </p><p>
+                    Use sales team to organize your different salespersons or
+                    departments into separate teams. Each team will work in
+                    its own list of opportunities.
+                </p>
+            </field>
+        </record>
+
+        <record id="sales_team.crm_case_section_salesteams_act" model="ir.actions.act_window">
+            <field name="name">Business Unit</field>
+            <field name="res_model">crm.case.section</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{}</field>
+            <field name="view_id" ref="sales_team.crm_case_section_salesteams_search"/>
+            <field name="context">{'readonly_by_pass': True}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click here to define a new sales team.
+                </p><p>
+                    Use sales team to organize your different salespersons or
+                    departments into separate teams. Each team will work in
+                    its own list of opportunities.
+                </p>
+            </field>
+        </record>
+
+
+
+        <record model="ir.ui.view" id="sale_margin_sale_order_inherit1">
+            <field name="name">sale.order.margin.view.form.inherit1</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_margin.sale_margin_sale_order"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='margin']" position="after">
+                    <field name="percentage_margin" widget="progressbar"/>
+                    <field name="reel_margin" groups="crm_prospecting.group_margeprcalc"/>
+                    <field name="reel_percentage_margin" groups="crm_prospecting.group_margeprcalc" widget="progressbar"/>
+                </xpath>
+                <xpath expr="//field[@name='amount_untaxed']" position="after">
+                    <field name="amount_discount_ongoing" groups="" String="Pourcentage Globale(%)" readonly="1"/>
+                    <field name="global_discount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                </xpath>
+                <xpath expr="//tree[@string='Sales Order Lines']/field[@name='discount']" position="after">
+                    <field name="line_discount" groups=""/>
+                </xpath>
+                <xpath expr="//tree[@string='Sales Order Lines']/field[@name='name']" position="replace">
+                    <field name="name" string="Desc"/>
+                </xpath>
+                <xpath expr="//tree[@string='Sales Order Lines']/field[@name='product_uom_qty']" position="replace">
+                    <field name="product_uom_qty" context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'company_id': parent.company_id}" on_change="product_id_change(parent.pricelist_id, product_id, product_uom_qty, product_uom, product_uos_qty, product_uos, name, parent.partner_id, False, False, parent.date_order, False, parent.fiscal_position, True, context)" string="Qté"/>
+                </xpath>
+                <xpath expr="//tree[@string='Sales Order Lines']/field[@name='product_uom']" position="replace">
+                    <field name="product_uom" context="{'company_id': parent.company_id}" on_change="onchange_product_uom(parent.pricelist_id, product_id, product_uom_qty, product_uom, product_uos_qty, product_uos, name, parent.partner_id, False, False, parent.date_order, parent.fiscal_position, context)" groups="product.group_uom" options="{&quot;no_open&quot;: True}" string="UM"/>
+                </xpath>
+                <xpath expr="//tree[@string='Sales Order Lines']/field[@name='price_unit']" position="replace">
+                    <field name="price_unit"  string="PU"/>
+                </xpath>
+
+                <xpath expr="//tree[@string='Sales Order Lines']/field[@name='price_subtotal']" position="after">
+                    <field name="discount_subtotal" groups=""/>
+                    <field name="margin_line" groups="" string="MRG"/>
+                    <field name="reel_margin_line" groups="crm_prospecting.group_margeprcalc"/>
+                    <field name="product_available_qty" groups="" string="Dispo"/>
+                    <field name="picking_delay" groups=""/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_margin_sale_order_line_form_inherit1">
+            <field name="name">sale.order.line.tree.margin.view.form.inherit1</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_margin.sale_margin_sale_order_line_form"/>
+            <field name="arch" type="xml">
+               <xpath expr="//tree[@string='Sales Order Lines']/field[@name='purchase_price']" position="replace">
+                    <field name="purchase_price" groups="base.group_user" string="PR"/>
+                </xpath>
+                <xpath expr="//tree[@string='Sales Order Lines']/field[@name='purchase_price']" position="after">
+                    <field name="cost_price" groups="crm_prospecting.group_margeprcalc" string="PRR"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_view_inherit1234">
+            <field name="name">sale.order.inherit1234</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_crm.sale_view_inherit123"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='campaign_id']" position="replace">
+                    <field name="campaign_id" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='medium_id']" position="replace">
+                    <field name="medium_id" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='source_id']" position="replace">
+                    <field name="source_id" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='categ_ids']" position="replace">
+                    <field name="categ_ids" widget="many2many_tags" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_order_form_inherit21">
+			<field name="name">crm.sale.order.form.inherit21</field>
+			<field name="model">sale.order</field>
+			<field name="inherit_id" ref="sale_firm.view_order_form_inherit2" />
+			<field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="before">
+                    <button  name="%(deposit_inv_action)d" string="Créer un Acompte" type="action"  attrs="{'invisible': ['|','|',('state','not in',['manual','progress']),('is_deposit','=',True),('with_deposit','=',False)]}" />
+                    <button name="action_create_removal_order" string="Générer un Enlévement" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('state','not in',['manual','progress']),('is_order','=',False),('all_planned_deliveries','=',True)]}" groups=""/>
+                </xpath>
+                <xpath expr="//field[@name='partner_shipping']" position="after">
+                    <field name="validity_offer" attrs="{'invisible':[('is_order','=',True)]}"/>
+                    <field name="all_planned_deliveries" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="crm_view_order_form_inherit1">
+			<field name="name">crm.sale.order.form.inherit1</field>
+			<field name="model">sale.order</field>
+			<field name="inherit_id" ref="sale.view_order_form" />
+			<field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="before">
+                    <button  name="%(deposit_inv_action)d" string="Créer un Acompte" type="action"  attrs="{'invisible': ['|','|',('state','not in',['manual','progress']),('is_deposit','=',True),('with_deposit','=',False)]}" />
+                    <button name="action_create_removal_order" string="Générer un Enlévement" type="object" class="oe_highlight" attrs="{'invisible':['|',('state','not in',['manual','progress']),('is_order','=',False)]}" groups=""/>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="replace">
+                    <field name="user_id" string="KAM"/>
+                </xpath>
+                <xpath expr="//field[@name='section_id']" position="replace">
+                    <field name="section_id" string="BU"/>
+                </xpath>
+                <xpath expr="//page[@string='Other Information']" position="after">
+                    <!--<page string="Livraisons" attrs="{'invisible':[('is_order','=',False)]}">-->
+                        <!--&lt;!&ndash;<field name="move_lines" nolabel="1">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<tree string="Products" editable="bottom">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<field name="removal_id" />&ndash;&gt;-->
+                                <!--&lt;!&ndash;<field name="product_id" />&ndash;&gt;-->
+                                <!--&lt;!&ndash;<field name="product_uom_qty" />&ndash;&gt;-->
+                                <!--&lt;!&ndash;<field name="state" />&ndash;&gt;-->
+                            <!--&lt;!&ndash;</tree>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</field>&ndash;&gt;-->
+                        <!--<field name="picking_ids" nolabel="1"/>-->
+                    <!--</page>-->
+                    <page string="Livraisons" attrs="{'invisible':[('is_order','=',False)]}">
+                        <field name="deliverie_ids" nolabel="1"/>
+                    </page>
+
+                    <page string="Situation" attrs="{'invisible':[('is_order','=',False)]}">
+                        <field name="situation_product_ids" nolabel="1" readonly="1">
+                            <tree string="Products">
+                                <field name="product_id" />
+                                <field name="qty_ordered" />
+                                <field name="qty_canceled" />
+                                <field name="qty_shipped" />
+                                <field name="qty_remaining_deliver" />
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+				<field name="order_line" position="before">
+                    <label for="amount_discount" />
+                    <field name="amount_discount" nolabel="1"/>
+                    <button name="action_sale_global_discount" string="Remise Globale" type="object" attrs="{'invisible':[('state','not in',['draft','sent'])]}" groups=""/>
+				</field>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="carrier_id"/>
+                    <field name="tel"/>
+                    <field name="driver" string="Chauffeur"/>
+                    <field name="driver_tel" string="Tél de Chauffeur"/>
+                </xpath>
+                <xpath expr="//field[@name='date_order']" position="after">
+                    <field name="opp_id"/>
+                    <!--<field name="whith_manifacture" attrs="{'invisible':[('is_order','=',False)]}"/>-->
+                    <field name="whith_reservation" attrs="{'invisible':[('is_order','=',False)]}"/>
+                    <field name="with_deposit" attrs="{'invisible':[('is_order','=',False)]}" string="Avec Acompte ?"/>
+                    <field name="deposit_number" attrs="{'invisible':[('with_deposit','=',False)]}" string="Restitution d'acompte"/>
+                    <field name="with_guaranty" attrs="{'invisible':[('is_order','=',False)]}" string="Avec Retenue de Garantie ?"/>
+                    <field name="guaranty_number" attrs="{'invisible':[('with_guaranty','=',False)]}"/>
+                </xpath>
+                <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d']" position="replace">
+                    <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice" type="action" states="manual" class="oe_highlight" groups="base.group_user" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='invoiced']" position="before">
+                    <field name="is_deposit" readonly="1" attrs="{'invisible':[('is_order','=',False)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='invoiced']" position="replace">
+                    <field name="invoiced" attrs="{'invisible':[('is_order','=',False)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_term']" position="replace">
+                    <field name="payment_term" options="{'no_create': True}" string="Échéance de paiement"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_term']" position="before">
+                    <field name="payment_condition"/>
+                </xpath>
+                <xpath expr="//button[@name='action_view_invoice']" position="replace">
+                    <button name="action_view_invoice" string="View Invoice" type="object" class="oe_highlight" attrs="{'invisible': [('invoice_exists', '=', False)]}" groups="base.group_user" invisible="1"/>
+                </xpath>
+                <!--<xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="attributes">-->
+                    <!--<attribute name="context">{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'company_id': parent.company_id,'location_id':12}</attribute>-->
+                <!--</xpath>-->
+			</field>
+		</record>
+
+        <record model="ir.ui.view" id="view_order_form_inherit1">
+            <field name="name">sale.order.form.sale.stock.inherit1</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_stock.view_order_form_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='picking_policy']" position="replace">
+                    <field name="picking_policy" invisible="1"/>
+                </xpath>
+                 <xpath expr="//field[@name='order_line']/form//field[@name='product_id']" position="replace">
+                   <field name="product_id" context="{'location_id':12,'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':False, 'company_id': parent.company_id}" groups="base.group_user" on_change="product_id_change_with_wh(parent.pricelist_id,product_id,product_uom_qty,False,product_uos_qty,False,name,parent.partner_id, False, True, parent.date_order, product_packaging, parent.fiscal_position, False, parent.warehouse_id, context)"/>
+               </xpath>
+               <xpath expr="//field[@name='order_line']/tree//field[@name='product_id']" position="replace">
+                   <field name="product_id" context="{'location':12,'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'company_id': parent.company_id}" groups="base.group_user" on_change="product_id_change_with_wh(parent.pricelist_id,product_id,product_uom_qty,False,product_uos_qty,False,name,parent.partner_id, False, True, parent.date_order, product_packaging, parent.fiscal_position, False, parent.warehouse_id, context)"/>
+               </xpath>
+                <xpath expr="//field[@name='shipped']" position="replace">
+                    <field name="shipped" attrs="{'invisible':[('is_order','=',False)]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!--<record id="sale.action_quotations" model="ir.actions.act_window">-->
+            <!--<field name="context">{'readonly_by_pass': True}</field>-->
+        <!--</record>-->
+
+        <!--<record id="sale.action_orders" model="ir.actions.act_window">-->
+            <!--<field name="context">{'readonly_by_pass': True}</field>-->
+        <!--</record>-->
+
+        <record model="ir.ui.view" id="sale_carrier_form_view">
+            <field name="name">sale.carrier.form</field>
+            <field name="model">sale.carrier</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Transporteur" version="8.O">
+                    <group >
+                        <field name="name"  />
+                        <field name="tel"  />
+                        <field name="driver"  string="Chauffeur"/>
+                        <field name="driver_tel"  string="Tél de Chauffeur"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_carrier_tree_view">
+            <field name="name">sale.carrier.tree</field>
+            <field name="model">sale.carrier</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Transporteur">
+                    <field name="name"  />
+                    <field name="tel"  />
+                    <field name="driver"  string="Chauffeur"/>
+                    <field name="driver_tel"  string="Tél de Chauffeur"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_sale_carrier_tree_view">
+            <field name="name">Transporteurs</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.carrier</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Transporteurs" id="menu_sale_carrier_list" parent="base.menu_base_config" action="action_sale_carrier_tree_view" sequence="0"/>
+
+        <record id="stock_removal_tree" model="ir.ui.view">
+            <field name="name">stock.removal.tree</field>
+            <field name="model">stock.removal</field>
+            <field name="arch" type="xml">
+                <tree colors="blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'done') and delivery_date &lt; current_date" string="Removal list">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="date"/>
+                    <field name="delivery_date" />
+                    <field name="origin"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="stock_removal_form" model="ir.ui.view">
+            <field name="name">stock.removal.form</field>
+            <field name="model">stock.removal</field>
+            <field name="arch" type="xml">
+                <form string="Removal">
+                    <header>
+                        <!--<button name="action_validated" string="Valider l'Enlévement" type="object" class="oe_highlight" groups="" attrs="{'invisible': ['|',('state', '!=','draft'),('type', '=','preparation')]}"/>-->
+                        <button name="%(stock_reservation_action)d" string="Valider l'Enlévement" type="action" class="oe_highlight" groups="" attrs="{'invisible': ['|',('state', '!=','draft'),('type', '=','preparation')]}"/>
+                        <!--<button name="action_create_preparation" string="Préparer l'Enlévement" type="object" class="oe_highlight" groups="" attrs="{'invisible': ['|',('state', '!=','approuved'),('type', '=','preparation')]}"/>-->
+                        <!--<button name="action_create_picking_out" string="Terminer la Préparation" type="object" class="oe_highlight" groups="" attrs="{'invisible': ['|',('state', '!=','draft'),('type', '=','removal')]}"/>-->
+                        <button name="action_create_picking_out" states="approuved" string="Générer BL" type="object" class="oe_highlight" groups="" />
+                        <button name="action_cancel_removal_order" states="draft,validated,approuved,ready_to_deliver" string="Annuler" groups="" type="object"/>
+                        <!--<field name="state" widget="statusbar" statusbar_visible="draft,validated,approuved,in_preparation,ready_to_deliver,done" statusbar_colors='{"draft":"blue","validated":"blue","approuved":"blue","in_preparation":"blue","ready_to_deliver":"blue","done":"blue"}' attrs="{'invisible': [('type', '=','preparation')]}"/>-->
+                        <!--<field name="state_preparation" widget="statusbar" statusbar_visible="draft,end_preparation" statusbar_colors='{"cancel":"red"}' attrs="{'invisible': [('type', '=','removal')]}"/>-->
+                        <field name="state" widget="statusbar" statusbar_visible="draft,validated,approuved,ready_to_deliver,done" statusbar_colors='{"draft":"blue","validated":"blue","approuved":"blue","ready_to_deliver":"blue","done":"blue"}'/>
+                    </header>
+                <sheet>
+                    <h1>
+                        <field name="name" class="oe_inline" readonly="0"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="whith_reservation" invisible="1"/>
+                            <field name="last_removal" attrs="{'invisible':[('type','=','preparation')],'readonly':[('state','!=','draft')]}"/>
+                            <field name="opp_id"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="delivery_date"/>
+                            <field name="sale_order_id"/>
+                            <field name="origin" placeholder="e.g. PSO0032" class="oe_inline"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Articles">
+                            <field name="move_lines" nolabel="1">
+                                <tree string="Products" editable="bottom">
+                                    <field name="product_id" onchange="onchange_product_id(product_id,parent.location_id,parent.location_dest_id,parent.partner_id)" select="1"/>
+                                    <field name="product_uom_qty" />
+                                    <field name="product_uom" invisible="1"/>
+                                    <field name="name" invisible="1"/>
+                                    <field name="invoice_state" invisible="1"/>
+                                    <field name="date_expected" invisible="1"/>
+                                    <field name="location_id" />
+                                    <field name="location_dest_id" />
+                                    <field name="availability" />
+                                    <field name="state" />
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                                <field name="amount_untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                            <div class="oe_clear"/>
+                            <field name="note" placeholder="Add an internal note..." class="oe_inline"/>
+                        </page>
+                        <page string="Informations complémentaires" readonly="1">
+                            <group string="Informations générales">
+                                <group>
+                                    <field name="user_id" />
+                                    <field name="section_id" />
+                                    <field name="location_id" />
+                                    <field name="location_dest_id" />
+                                    <field name="type" />
+                                </group>
+                                <group>
+                                    <field name="company_id" groups="" />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_stock_removal_filter" model="ir.ui.view">
+            <field name="name">stock.removal.list.select</field>
+            <field name="model">stock.removal</field>
+            <field name="arch" type="xml">
+                <search string="Search Stock Removal">
+                    <field name="name" />
+                    <field name="partner_id" operator="child_of"/>
+                    <field name="user_id"/>
+                    <field name="section_id" string="BU" groups=""/>
+                    <filter string="Moi" domain="[('user_id','=',uid)]" name="my_stock_removal_filter"/>
+                    <!--<separator/>-->
+                    <!--<filter string="Bons d'Enlévement" name="removal" domain="[('type','=','removal')]"/>-->
+                    <!--<filter string="Bons de préparation" name="preparation" domain="[('type','=','preparation')]"/>-->
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="KAM" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter string="Client" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter string="BU" domain="[]" context="{'group_by':'section_id'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="action_stock_removal_tree_view">
+            <field name="name">Bons d'Enlevement</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.removal</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('type','=','removal')]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_stock_removal_filter"/>
+            <field name="context">{'default_type':'removal','search_default_removal': 1,'search_default_my_stock_removal_filter':1,'default_removal': 1,'default_preparation': 0}</field>
+            <field name="filter" eval="True"/>
+        </record>
+
+        <menuitem id="menu_stock_removal" parent="base.menu_sales" action="action_stock_removal_tree_view" sequence="8"/>
+        <menuitem id="menu_stock_removal_warehouse" parent="stock.menu_stock_warehouse_mgmt" action="action_stock_removal_tree_view" sequence="2"/>
+
+        <record id="view_stock_removal_move" model="ir.ui.view">
+            <field name="name">stock.removal.move.report.tree</field>
+            <field name="model">stock.removal.move</field>
+            <field name="arch" type="xml">
+                <tree string="Analyse des Réservations" create="0" delete="0">
+                    <field name="section_id" />
+                    <field name="user_id"/>
+                    <field name="partner_id" />
+                    <field name="removal_id"/>
+                    <field name="product_id" />
+                    <field name="product_uom_qty" sum="Total Quantités "/>
+                    <field name="delivery_date"/>
+                    <field name="state" />
+               </tree>
+            </field>
+        </record>
+
+        <record id="view_stock_removal_move_search" model="ir.ui.view">
+            <field name="name">stock.removal.move.search</field>
+            <field name="model">stock.removal.move</field>
+            <field name="arch" type="xml">
+                <search string="Analyse des Réservations">
+                    <field name="product_id"/>
+                    <field name="partner_id" />
+                    <field name="user_id"/>
+                    <field name="section_id" />
+                    <filter string="Brouillon" domain="[('state','=','draft')]" name="draft"/>
+                    <filter string="Validé" domain="[('state','=','validated')]" name="validated"/>
+                    <filter string="Approuvé" domain="[('state','=','approuved')]" name="approuved"/>
+                    <filter string="A livrer" domain="[('state','=','ready_to_deliver')]" name="ready_to_deliver"/>
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter string="BU" icon="terp-accessories-archiver" context="{'group_by':'section_id'}" name='group_by_section'/>
+                        <filter string="Client" icon="terp-accessories-archiver" context="{'group_by':'partner_id'}" name='group_by_partner'/>
+                        <filter string="Article" icon="terp-accessories-archiver" context="{'group_by':'product_id'}" name='group_by_product'/>
+                        <filter string="Enlévement" icon="terp-accessories-archiver" context="{'group_by':'removal_id'}" name='group_by_removal'/>
+                     </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_stock_removal_move_tree_view">
+            <field name="name">Détails BE</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.removal.move</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="search_view_id" ref="view_stock_removal_move_search"/>
+        </record>
+
+        <menuitem id="menu_stock_removal_move" parent="base.menu_sales" action="action_stock_removal_move_tree_view" sequence="9"/>
+
+
+        <record model="ir.actions.act_window" id="action_stock_preparation_tree_view">
+            <field name="name">Bons de Préparation</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.removal</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('type','=','preparation')]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_stock_removal_filter"/>
+            <field name="context">{'default_type':'preparation','search_default_preparation': 1,'search_default_my_stock_removal_filter':1,'default_removal': 0,'default_preparation': 1}</field>
+            <field name="filter" eval="True"/>
+        </record>
+
+        <!--<menuitem id="menu_stock_preparation" parent="stock.menu_stock_warehouse_mgmt" action="action_stock_preparation_tree_view" sequence="3"/>-->
+
+        <record model="ir.ui.view" id="view_warehouse_form_inherit1">
+			<field name="name">stock.warehouse.form.inherit1</field>
+			<field name="model">stock.warehouse</field>
+			<field name="inherit_id" ref="stock.view_warehouse" />
+			<field name="arch" type="xml">
+                <xpath expr="//field[@name='code']" position="after">
+                    <field name="location_id"/>
+                    <field name="preparation_location_id"/>
+                    <field name="delivery_location_id"/>
+                </xpath>
+			</field>
+		</record>
+
+        <record model="ir.ui.view" id="vpicktree_inherit1">
+            <field name="name">stock.picking.tree.inherit1</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='min_date']" position="replace">
+                    <field name="min_date" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="stock_normal_reservation_tree" model="ir.ui.view">
+            <field name="name">stock.normal.reservation.tree</field>
+            <field name="model">stock.normal.reservation</field>
+            <field name="arch" type="xml">
+                <tree colors="blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'validated') and delivery_date &lt; current_date" string="Reservation list">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="date"/>
+                    <field name="section_id"/>
+                    <field name="removal_id"/>
+                    <field name="sale_order_id"/>
+                    <field name="delivery_date" />
+                    <field name="origin"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="stock_normal_reservation_form" model="ir.ui.view">
+            <field name="name">stock.normal.reservation.form</field>
+            <field name="model">stock.normal.reservation</field>
+            <field name="arch" type="xml">
+                <form string="Reservation list">
+                    <header>
+                        <button name="action_validated" states="draft" string="Valider la Réservation" type="object" class="oe_highlight" groups=""/>
+                        <!--<button name="action_cancel" states="draft" string="Annuler la Réservation" type="object" class="oe_highlight" groups=""/>-->
+                        <field name="state" widget="statusbar" statusbar_visible="draft,validated" statusbar_colors='{"cancel":"red"}'/>
+                    </header>
+                <sheet>
+                    <h1>
+                        <field name="name" class="oe_inline" readonly="1"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="delivery_date"/>
+                            <field name="removal_id"/>
+                            <field name="sale_order_id"/>
+                            <field name="origin" placeholder="e.g. PSO0032" class="oe_inline"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Articles">
+                            <field name="reservation_lines" nolabel="1" readonly="1">
+                                <tree string="Products" editable="bottom">
+                                    <field name="product_id" />
+                                    <field name="name" />
+                                    <field name="product_qty" />
+                                    <field name="product_uom_id" />
+                                    <field name="location_dest_id" />
+                                    <field name="move_id" />
+                                    <field name="state" />
+                                </tree>
+                            </field>
+                            <field name="note" placeholder="Add an internal note..." class="oe_inline"/>
+                        </page>
+                        <page string="Informations complémentaires" readonly="1">
+                            <group string="Informations générales">
+                                <group>
+                                    <field name="user_id" />
+                                    <field name="section_id" />
+                                    <field name="location_id" />
+                                    <field name="location_dest_id" />
+                                </group>
+                                <group>
+                                    <field name="company_id" groups="" />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_stock_normal_reservation_filter" model="ir.ui.view">
+            <field name="name">stock.normal.reservation.select</field>
+            <field name="model">stock.normal.reservation</field>
+            <field name="arch" type="xml">
+                <search string="Search List Reservation">
+                    <field name="name" />
+                    <field name="partner_id" operator="child_of"/>
+                    <field name="user_id"/>
+                    <field name="section_id" string="BU" groups=""/>
+                    <filter string="Moi" domain="[('user_id','=',uid)]" name="my_stock_removal_filter"/>
+                    <filter string="À valider" domain="[('state','=','draft')]" name="my_stock_removal_draft_reservation_filter"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="KAM" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter string="Client" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter string="BU" domain="[]" context="{'group_by':'section_id'}"/>
+                        <filter string="Statut" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="action_stock_normal_reservation_tree_view">
+            <field name="name">Réservations sur Stock</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.normal.reservation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_stock_normal_reservation_filter"/>
+            <field name="context">{'search_default_my_stock_removal_draft_reservation_filter': 1}</field>
+        </record>
+
+        <menuitem id="menu_stock_normal_reservation" parent="base.menu_sales" action="action_stock_normal_reservation_tree_view" sequence="8"/>
+
+        <record id="stock_move_shipping_tree" model="ir.ui.view">
+            <field name="name">stock.move.shipping.tree</field>
+            <field name="model">stock.move</field>
+            <field name="arch" type="xml">
+                <tree string="Shipping list" create="0">
+                    <field name="product_id"/>
+                    <field name="name"/>
+                    <field name="supplier_id" string="Fournisseur" invisible="1"/>
+                    <field name="customer_id" string="Client"/>
+                    <field name="date_expected" string="Date d'Arrivage"/>
+                    <field name="user_id" string="KAM"/>
+                    <field name="section_id"/>
+                    <field name="removal_id" invisible="1"/>
+                    <field name="product_uom_qty"/>
+                    <field name="product_uom"/>
+                    <field name="group_id"/>
+                    <field name="origin"/>
+                    <field name="purchase_line_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="action_stock_move_shipping_tree_view">
+            <field name="name">Arrivages</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.move</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('picking_type_id','=',1),('state','=','assigned')]</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="stock_move_shipping_tree"></field>
+        </record>
+
+        <menuitem id="menu_stock_move_shipping" parent="base.menu_sales" action="action_stock_move_shipping_tree_view" sequence="10"/>
+
+        <record id="stock_shipping_reservation_tree" model="ir.ui.view">
+            <field name="name">stock.shipping.reservation.tree</field>
+            <field name="model">stock.shipping.reservation</field>
+            <field name="arch" type="xml">
+                <tree colors="blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'validated') and delivery_date &lt; current_date" string="Reservation list">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="date"/>
+                    <field name="section_id"/>
+                    <field name="delivery_date" />
+                    <field name="removal_id"/>
+                    <field name="sale_order_id"/>
+                    <field name="origin"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="stock_shipping_reservation_form" model="ir.ui.view">
+            <field name="name">stock.shipping.reservation.form</field>
+            <field name="model">stock.shipping.reservation</field>
+            <field name="arch" type="xml">
+                <form string="Reservation list">
+                    <header>
+                        <button name="action_validated" states="draft" string="Valider la Réservation" type="object" class="oe_highlight" groups=""/>
+                        <!--<button name="action_cancel" states="draft" string="Annuler la Réservation" type="object" class="oe_highlight" groups=""/>-->
+                        <field name="state" widget="statusbar" statusbar_visible="draft,validated" statusbar_colors='{"cancel":"red"}'/>
+                    </header>
+                <sheet>
+                    <h1>
+                        <field name="name" class="oe_inline" readonly="1"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="delivery_date"/>
+                            <field name="removal_id"/>
+                            <field name="sale_order_id"/>
+                            <field name="origin" placeholder="e.g. PSO0032" class="oe_inline"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Articles">
+                            <field name="reservation_lines" nolabel="1" readonly="1">
+                                <tree string="Products" editable="bottom">
+                                    <field name="product_id" />
+                                    <field name="name" />
+                                    <field name="product_qty" />
+                                    <field name="product_uom_id" />
+                                    <field name="location_dest_id" />
+                                    <field name="move_id" />
+                                    <field name="move_dest_id" />
+                                    <field name="state" />
+                                </tree>
+                            </field>
+                            <field name="note" placeholder="Add an internal note..." class="oe_inline"/>
+                        </page>
+                        <page string="Informations complémentaires" readonly="1">
+                            <group string="Informations générales">
+                                <group>
+                                    <field name="user_id" />
+                                    <field name="section_id" />
+                                    <field name="location_id" />
+                                    <field name="location_dest_id" />
+                                </group>
+                                <group>
+                                    <field name="company_id" groups="" />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_stock_shipping_reservation_filter" model="ir.ui.view">
+            <field name="name">stock.shipping.reservation.select</field>
+            <field name="model">stock.shipping.reservation</field>
+            <field name="arch" type="xml">
+                <search string="Search List Reservation">
+                    <field name="name" />
+                    <field name="partner_id" operator="child_of"/>
+                    <field name="user_id"/>
+                    <field name="section_id" string="BU" groups=""/>
+                    <filter string="Moi" domain="[('user_id','=',uid)]" name="my_stock_removal_filter"/>
+                    <filter string="À valider" domain="[('state','=','draft')]" name="my_stock_removal_draft_reservation_filter"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="KAM" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter string="Client" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter string="BU" domain="[]" context="{'group_by':'section_id'}"/>
+                        <filter string="Statut" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="action_stock_shipping_reservation_tree_view">
+            <field name="name">Réservations sur Arrivage</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.shipping.reservation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_stock_shipping_reservation_filter"/>
+            <field name="context">{'search_default_my_stock_removal_draft_reservation_filter': 1}</field>
+        </record>
+
+        <menuitem id="menu_stock_shipping_reservation" parent="base.menu_sales" action="action_stock_shipping_reservation_tree_view" sequence="11"/>
+
+        <record id="stock_purchase_reservation_tree" model="ir.ui.view">
+            <field name="name">stock.purchase.reservation.tree</field>
+            <field name="model">stock.purchase.reservation</field>
+            <field name="arch" type="xml">
+                <tree colors="blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'validated') and delivery_date &lt; current_date" string="Reservation list">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="date"/>
+                    <field name="section_id"/>
+                    <field name="delivery_date" />
+                    <field name="removal_id"/>
+                    <field name="sale_order_id"/>
+                    <field name="origin"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="stock_purchase_reservation_form" model="ir.ui.view">
+            <field name="name">stock.purchase.reservation.form</field>
+            <field name="model">stock.purchase.reservation</field>
+            <field name="arch" type="xml">
+                <form string="Reservation list">
+                    <header>
+                        <button name="action_validated" states="draft" string="Valider la Réservation" type="object" class="oe_highlight" groups=""/>
+                        <!--<button name="action_cancel" states="draft" string="Annuler la Réservation" type="object" class="oe_highlight" groups=""/>-->
+                        <field name="state" widget="statusbar" statusbar_visible="draft,validated" statusbar_colors='{"cancel":"red"}'/>
+                    </header>
+                <sheet>
+                    <h1>
+                        <field name="name" class="oe_inline" readonly="1"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="delivery_date"/>
+                            <field name="removal_id"/>
+                            <field name="sale_order_id"/>
+                            <field name="origin" placeholder="e.g. PSO0032" class="oe_inline"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Articles">
+                            <field name="reservation_lines" nolabel="1" readonly="1">
+                                <tree string="Products" editable="bottom">
+                                    <field name="product_id" />
+                                    <field name="name" />
+                                    <field name="product_qty" />
+                                    <field name="product_uom_id" />
+                                    <field name="location_dest_id" />
+                                    <field name="move_id" />
+                                    <field name="move_dest_id" />
+                                    <field name="state" />
+                                </tree>
+                            </field>
+                            <field name="note" placeholder="Add an internal note..." class="oe_inline"/>
+                        </page>
+                        <page string="Informations complémentaires" readonly="1">
+                            <group string="Informations générales">
+                                <group>
+                                    <field name="user_id" />
+                                    <field name="section_id" />
+                                    <field name="location_id" />
+                                    <field name="location_dest_id" />
+                                </group>
+                                <group>
+                                    <field name="company_id" groups="" />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_stock_purchase_reservation_filter" model="ir.ui.view">
+            <field name="name">stock.purchase.reservation.select</field>
+            <field name="model">stock.purchase.reservation</field>
+            <field name="arch" type="xml">
+                <search string="Search List Reservation">
+                    <field name="name" />
+                    <field name="partner_id" operator="child_of"/>
+                    <field name="user_id"/>
+                    <field name="section_id" string="BU" groups=""/>
+                    <filter string="Moi" domain="[('user_id','=',uid)]" name="my_stock_removal_filter"/>
+                    <filter string="À valider" domain="[('state','=','draft')]" name="my_stock_removal_draft_reservation_filter"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="KAM" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter string="Client" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter string="BU" domain="[]" context="{'group_by':'section_id'}"/>
+                        <filter string="Statut" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="action_stock_purchase_reservation_tree_view">
+            <field name="name">Réservations sur Demande Achat</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.purchase.reservation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_stock_purchase_reservation_filter"/>
+            <field name="context">{'search_default_my_stock_removal_draft_reservation_filter': 1}</field>
+        </record>
+
+        <!--<menuitem id="menu_stock_purchase_reservation" parent="base.menu_sales" action="action_stock_purchase_reservation_tree_view" sequence="12"/>-->
+
+        <record id="stock_cancellation_tree" model="ir.ui.view">
+            <field name="name">stock.cancellation.tree</field>
+            <field name="model">stock.cancellation</field>
+            <field name="arch" type="xml">
+                <tree colors="blue:state == 'draft'" string="cancellation list">
+                    <field name="name"/>
+                    <field name="sale_order_id"/>
+                    <field name="date"/>
+                    <field name="validate_date" />
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="stock_cancellation_form" model="ir.ui.view">
+            <field name="name">stock.cancellation.form</field>
+            <field name="model">stock.cancellation</field>
+            <field name="arch" type="xml">
+                <form string="cancellation list">
+                    <header>
+                        <button name="action_validated" states="draft" string="Valider l'Annulation" type="object" class="oe_highlight" groups=""/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,validated" statusbar_colors='{"cancel":"red"}'/>
+                    </header>
+                    <sheet>
+                        <h1>
+                            <field name="name" class="oe_inline" readonly="1"/>
+                        </h1>
+                        <group>
+                            <group>
+                                <field name="date"/>
+                                <field name="validate_date"/>
+                                <field name="sale_order_id"/>
+                                <field name="location_dest_id" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Articles">
+                                <field name="line_ids" nolabel="1">
+                                    <tree string="Products" editable="bottom">
+                                        <field name="product_id" />
+                                        <field name="product_qty" />
+                                        <field name="removal_id" domain="[('sale_order_id','=',parent.sale_order_id)]"/>
+                                    </tree>
+                                </field>
+                                <field name="note" placeholder="Add an internal note..." class="oe_inline"/>
+                            </page>
+                            <page string="Informations complémentaires" readonly="1">
+                                <group string="Informations générales">
+                                    <group>
+                                        <field name="user_id" />
+                                        <field name="section_id" />
+                                        <field name="location_id" />
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_stock_cancellation_filter" model="ir.ui.view">
+            <field name="name">stock.cancellation.select</field>
+            <field name="model">stock.cancellation</field>
+            <field name="arch" type="xml">
+                <search string="Search List cancellation">
+                    <field name="name" />
+                    <field name="user_id"/>
+                    <field name="section_id" string="BU" groups=""/>
+                    <filter string="Moi" domain="[('user_id','=',uid)]" name="my_stock_removal_filter"/>
+                    <filter string="À valider" domain="[('state','=','draft')]" name="my_stock_cancellation_filter"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="KAM" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter string="BU" domain="[]" context="{'group_by':'section_id'}"/>
+                        <filter string="Statut" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="action_stock_cancellation_tree_view">
+            <field name="name">Annulations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.cancellation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_stock_cancellation_filter"/>
+            <field name="context">{}</field>
+        </record>
+
+        <!--<menuitem id="menu_stock_cancellation" parent="base.menu_sales" action="action_stock_cancellation_tree_view" sequence="13"/>-->
+
+
+        <record model="ir.ui.view" id="invoice_form_inherit1">
+            <field name="name">account.invoice.form.inherit1</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='fiscal_position']" position="after">
+                    <field name="inv_guaranty"/>
+                    <field name="inv_species"/>
+                    <field name="with_discount"/>
+                    <field name="with_deposit" invisible="1"/>
+                    <field name="with_guaranty" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='residual']" position="before">
+                    <field name="timbre_amount" nolabel="0" string="Dont Timbre" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible':[('inv_species','=',False)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='amount_untaxed']" position="before">
+                    <field name="discount_amount_untaxed" nolabel="0" string="Total HT" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible':[('with_discount','=',False)]}"/>
+                    <field name="discount_number" nolabel="0" string="% Remise" attrs="{'invisible':[('with_discount','=',False)]}"/>
+                    <!--<field name="discount_prc" nolabel="0" string="% Remise" attrs="{'invisible':[('with_discount','=',False)]}"/>-->
+                    <field name="discount_amount" nolabel="0" string="Remise" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible':[('with_discount','=',False)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="replace">
+                    <field name="user_id" string="KAM" groups="base.group_user" context="{'default_groups_ref': ['base.group_user', 'base.group_partner_manager', 'account.group_account_invoice']}"/>
+                </xpath>
+                <xpath expr="//field[@name='amount_tax']" position="after">
+                    <field name="amount_iat" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible':[('with_deposit','=',False),('with_guaranty','=',False)]}"/>
+                    <field name="deposit_number_prc" string="% Acompte" attrs="{'invisible':[('with_deposit','=',False)]}"/>
+                    <field name="amount_deposit" string="Acompte" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible':[('with_deposit','=',False)]}"/>
+                    <field name="guaranty_number_prc" string="% Retenue Garantie" attrs="{'invisible':[('with_guaranty','=',False)]}"/>
+                    <field name="amount_guaranty" string="Retenue Garantie" widget="monetary" options="{'currency_field': 'currency_id'}" attrs="{'invisible':[('with_guaranty','=',False)]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="invoice_tree_inherit1">
+            <field name="name">account.invoice.tree.inherit1</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="replace">
+                    <field name="user_id" string="KAM" />
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="account_invoice_tree_inherit">
+            <field name="name">sale.account.invoice.tree.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="sale.account_invoice_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='section_id']" position="replace">
+                    <field name="section_id" groups="base.group_multi_salesteams" string="BU"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="account_invoice_form_inherit">
+            <field name="name">sale.account.invoice.form.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="sale.account_invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='section_id']" position="replace">
+                    <field name="section_id" groups="base.group_multi_salesteams" string="BU"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="product_template_form_view_procurement_button_inherit">
+            <field name="name">product.template_procurement.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_view_routes']" position="replace">
+                    <button class="oe_inline oe_stat_button" name="action_view_routes" string="Routes" type="object" icon="fa-cogs" attrs="{'invisible':[('type', '=', 'service')]}" invisible="1"/>
+                </xpath>
+                <xpath expr="//button[@name='action_view_orderpoints']" position="replace">
+                    <button class="oe_inline oe_stat_button" name="stock.action_view_orderpoints" type="object" attrs="{'invisible':[('type', '=', 'service')]}" icon="fa-refresh" string="Reordering Rules" groups="crm_prospecting.group_warehouse"/>
+                </xpath>
+            </field>
+        </record>
+
+        <menuitem id="product.menu_products" action="product.product_normal_action_sell" parent="base.menu_product" groups="crm_prospecting.group_not_used" sequence="10"/>
+
+        <record model="ir.ui.view" id="view_move_form_inherit1">
+            <field name="name">stock.move.form.inherit1</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='moved_quants_grp']" position="after">
+                    <group name="notes" string="Notes" colspan="4" groups="base.group_no_one" attrs="{'readonly': [('state', '=', 'done')]}">
+                        <field name="note" nolabel="1"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <menuitem id="menu_purchase_request" parent="base.menu_sales" action="purchase_request.purchase_request_by_user_action" sequence="12"/>
+
+    </data>
+
+</openerp>
