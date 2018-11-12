@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="constat_voucher_payement_view_form" model="ir.ui.view">
+            <field name="name">constat.payment.voucher.receipt.form</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_receipt_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@string='Unreconcile']" position="replace">
+                    <button name="cancel_voucher" string="Unreconcile" type="object" states="posted,bank_transfert" confirm="Are you sure to unreconcile and cancel this record ?"/>
+                </xpath>
+
+                <xpath expr="//field[@name='journal_id']" position="replace">
+                    <field name="journal_id"
+                                domain="[('type','in',['bank', 'cash']),('is_method_payment','=',True)]"
+                                on_change="onchange_journal(journal_id, line_cr_ids, False, partner_id, date, amount, type, company_id, context)"
+                                string="Payment Method"/>
+                </xpath>
+
+                <xpath expr="//field[@name='journal_id']" position="after">
+                   <field name="bank_id" attrs="{'invisible':[('state','!=','bank_transfert')]}"/>
+                </xpath>
+                <field name="state" position="replace">
+                    <field name="state" widget="statusbar" statusbar_visible="draft,bank_transfert,posted,unpaid,encaissed" statusbar_colors='{"proforma":"blue"}'/>
+                </field>
+                <xpath expr="//field[@name='period_id']" position="after">
+                   <field name="transfert_date"/>
+                    <field name="deadline_date"/>
+                </xpath>
+                <xpath expr="//field[@name='line_dr_ids']" position="after">
+                    <label for="unpaid_ids" string="Impayés"/>
+                    <field name="unpaid_ids" domain="[('partner_id','=',partner_id),('state','=','unpaid'),('voucher_action','=','noprocessed')]"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                   <field name="customer_bank"/>
+                    <field name="city_customer_bank"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_voucher_tree_inherit_1" model="ir.ui.view">
+            <field name="name">account.voucher.tree.inherit1</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_voucher_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date']" position="after">
+                    <field name="deadline_date"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="invoice_form_inherit_1" model="ir.ui.view">
+            <field name="name">account.invoice.form.inherit1</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account_voucher.view_invoice_customer"/>
+            <field name="arch" type="xml">
+                <button name="invoice_pay_customer" position="replace">
+                    <button name="invoice_pay_customer" type="object" string="Register Payment" attrs="{'invisible': ['|','|',('state','!=','open'),('type','=','out_invoice'), ('sent','=',True)]}" groups="base.group_user"/>
+                    <button name="invoice_pay_customer" type="object" string="Register Payment" attrs="{'invisible': ['|','|',('state','!=','open'),('type','=','out_invoice'), ('sent','=',False)]}" class="oe_highlight" groups="base.group_user"/>
+                </button>
+            </field>
+        </record>
+
+
+    </data>
+</openerp>
