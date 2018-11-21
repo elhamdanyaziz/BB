@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="accountdepositlcn">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-name="account_invoice_payment.accountdepositlcn">
+                        <t t-call="report.html_container">
+                            <t t-foreach="docs" t-as="o">
+                                <t t-call="account_invoice_payment.deposit_layout_lcn">
+                                    <div class="page">
+                                        <!--<div class="ref_customer">-->
+                                            <!--<p class="p">Référence Client</p> <div class="carre"><span t-esc="o.ref_customer[0]"/></div><div class="carre_no_left"><span t-esc="o.ref_customer[1]"/></div><div class="carre_no_left"><span t-esc="o.ref_customer[2]"/></div><div class="carre_no_left"><span t-esc="o.ref_customer[3]"/></div><div class="carre_no_left"><span t-esc="o.ref_customer[4]"/></div><div class="carre_no_left"><span t-esc="o.ref_customer[5]"/></div><div class="carre_no_left"><span t-esc="o.ref_customer[6]"/></div><div class="carre_no_left"><span t-esc="o.ref_customer[7]"/></div><div class="carre_no_left"><span t-esc="o.ref_customer[8]"/></div><div class="carre_no_left"><span t-esc="o.ref_customer[9]"/></div><div class="carre_no_left"><span t-esc="o.ref_customer[10]"/></div><div class="carre_no_left"><span t-esc="o.ref_customer[11]"/></div>-->
+                                        <!--</div>-->
+                                        <div class="ref_customer" t-if="len(str(o.ref_customer)) != 11">
+                                            <p class="p">Référence Client</p>
+                                            <div class="carre">0</div><t t-foreach="11-len(str(o.ref_customer))-1" t-as="i"><div class="carre_no_left">0</div></t><t t-foreach="str(o.ref_customer)" t-as="refcustomer"><div class="carre_no_left"><span t-esc="refcustomer"/></div></t>
+                                        </div>
+                                        <div class="ref_customer" t-if="len(str(o.ref_customer))== 11">
+                                            <p class="p">Référence Client</p>
+                                            <t t-foreach="str(o.ref_customer)" t-as="refcustomer"><div class="carre_no_left"><span t-esc="refcustomer"/></div></t>
+                                        </div>
+
+                                        <div class="bank_agency">
+                                            <p class="p">Code et Libellé Agence</p> <div class="carre"><span t-esc="o.bank_agency_code[0]"/></div><div class="carre_no_left"><span t-esc="o.bank_agency_code[1]"/></div><div class="carre_no_left"><span t-esc="o.bank_agency_code[2]"/></div><div class="bank_agency_name"><span t-esc="o.bank_agency_name"/></div>
+                                        </div>
+                                        <!--<div class="account_number">-->
+                                            <!--<p class="p">Numéro de Compte</p> <div class="carre"><span t-esc="o.account_number[0]"/></div><div class="carre_no_left"><span t-esc="o.account_number[1]"/></div><div class="carre_no_left"><span t-esc="o.account_number[2]"/></div><div class="carre_no_left"><span t-esc="o.account_number[3]"/></div><div class="carre_no_left"><span t-esc="o.account_number[4]"/></div><div class="carre_no_left"><span t-esc="o.account_number[5]"/></div><div class="carre_no_left"><span t-esc="o.account_number[6]"/></div><div class="carre_no_left"><span t-esc="o.account_number[7]"/></div><div class="carre_no_left"><span t-esc="o.account_number[8]"/></div>-->
+                                        <!--</div>-->
+                                        <div class="account_number" t-if="len(str(o.account_number)) != 9">
+                                            <p class="p">Numéro de Compte</p>
+                                            <div class="carre">0</div><t t-foreach="9-len(str(o.account_number))-1" t-as="i"><div class="carre_no_left">0</div></t><t t-foreach="str(o.account_number)" t-as="number"><div class="carre_no_left"><span t-esc="number"/></div></t>
+                                        </div>
+                                        <div class="account_number" t-if="len(str(o.account_number))== 9">
+                                            <p class="p">Numéro de Compte</p>
+                                            <t t-foreach="str(o.account_number)" t-as="number"><div class="carre_no_left"><span t-esc="number"/></div></t>
+                                        </div>
+                                         <div class="date">
+                                            <p class="p">Le</p> <div class="carre"><span t-esc="o.transfert_date[8]"/><span t-esc="o.transfert_date[9]"/></div><div class="carre_no_left"><span t-esc="o.transfert_date[5]"/><span t-esc="o.transfert_date[6]"/></div><div class="carre_no_left"><span t-esc="o.transfert_date[0]"/></div><div class="carre_no_left"><span t-esc="o.transfert_date[1]"/></div><div class="carre_no_left"><span t-esc="o.transfert_date[2]"/></div><div class="carre_no_left"><span t-esc="o.transfert_date[3]"/></div>
+                                        </div>
+                                        <div class="name">
+                                            <p class="p">Numéro de Remise</p> <div class="carre"><span t-esc="o.name[0]"/></div><div class="carre_no_left"><span t-esc="o.name[1]"/></div><div class="carre_no_left"><span t-esc="o.name[2]"/></div><div class="carre_no_left"><span t-esc="o.name[3]"/></div><div class="carre_no_left"><span t-esc="o.name[4]"/></div><div class="carre_no_left"><span t-esc="o.name[5]"/></div><div class="carre_no_left"><span t-esc="o.name[6]"/></div>
+                                        </div>
+
+                                        <div class="amount_total"  t-if="len(str(o.amount_total)) != 12">
+                                            <p class="p">Montant</p> <div class="carre">0</div><t t-foreach="12-len(str(o.amount_total))-1" t-as="i"><div class="carre_no_left">0</div></t><t t-foreach="str(o.amount_total)" t-as="l"><div class="carre_no_left"><span t-esc="l"/></div></t>
+                                        </div>
+                                        <div class="amount_total"  t-if="len(str(o.amount_total)) == 12">
+                                            <p class="p">Montant</p> <div class="carre"><span t-esc="str(o.amount_total)[0]"/></div><t t-foreach="str(o.amount_total)[1:]" t-as="l"><div class="carre_no_left"><span t-esc="l"/></div></t>
+                                        </div>
+
+
+                                        <div class="number_lcn" t-if="len(str(o.number_lcn)) != 4">
+                                            <p class="plcn">Nombre de LCN</p>
+                                            <div class="carre">0</div><t t-foreach="4-len(str(o.number_lcn))-1" t-as="i"><div class="carre_no_left">0</div></t><t t-foreach="str(o.number_lcn)" t-as="l"><div class="carre_no_left"><span t-esc="l"/></div></t>
+                                        </div>
+                                        <div class="number_lcn" t-if="len(str(o.number_lcn))== 4">
+                                            <p class="plcn">Nombre de LCN</p>
+                                            <t t-foreach="str(o.number_lcn)" t-as="l"><div class="carre_no_left"><span t-esc="l"/></div></t>
+                                        </div>
+                                        <fieldset class="reserved_bank">
+                                               <legend class="legend">Cadre réservé à l'agence</legend>
+                                              <div class="carre_reserved_bank"></div> <p class="p_reserved_bank">Encaissement différé</p>
+                                              <br/>
+                                              <div class="carre_reserved_bank"></div> <p class="p_reserved_bank">Escompte</p>
+                                              <br/>
+                                              <div class="carre_reserved_bank"></div> <p class="p_reserved_bank">Crédit immédiat(*)</p>
+                                        </fieldset>
+                                        <div class="cutoff">---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</div>
+                                        <div class="namecustomer">
+                                             <p class="pdepositlcn">NOM DU CLIENT  <span t-field="o.customer_name"/></p>
+                                             <div class="carre_ref_deposit"><span t-field="o.name"/></div>
+                                        </div>
+
+                                        <table class="table_lcn">
+                                            <thead>
+                                                <tr>
+                                                    <th width="25%" rowspan="2" class="th">TIRÉ/TIREUR</th>
+                                                    <th width="35%" colspan="2" class="th">DOMICILIATION</th>
+                                                    <th width="12%" rowspan="2" class="th">N° LCN</th>
+                                                    <th width="11%" rowspan="2" class="th">ÉCHÉANCE</th>
+                                                    <th width="22%" rowspan="2" class="th">MONTANT</th>
+                                                </tr>
+                                                <tr>
+                                                    <th width="20%" class="th">Banque</th>
+                                                    <th width="15%" class="th">Ville</th>
+                                                </tr>
+                                           </thead>
+                                           <tbody class="lcn_tbody">
+                                                <tr t-foreach="o.line_ids" t-as="l">
+                                                    <td width="25%" class="td">
+                                                       <span t-field="l.partner_id"/>
+                                                    </td>
+                                                    <td width="20%" class="td">
+                                                       <span t-field="l.bank"/>
+                                                    </td>
+                                                    <td width="15%" class="td">
+                                                       <span t-field="l.city"/>
+                                                    </td>
+                                                    <td width="12%" class="td">
+                                                       <span t-field="l.ref_lcn"/>
+                                                    </td>
+                                                    <td width="11%" class="td">
+                                                       <span t-field="l.deadline_date"/>
+                                                    </td>
+                                                    <td width="22%" class="td text-right">
+                                                       <span t-field="l.amount"/>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </t>
+                             </t>
+                         </t>
+                    </t>
+
+                 </t>
+             </t>
+        </template>
+    </data>
+</openerp>
