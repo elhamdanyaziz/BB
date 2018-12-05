@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report 
+            id="report_stockpreparation"
+            string="Bon de Préparation"
+            model="stock.removal"
+            report_type="qweb-pdf"
+            file="crm_prospecting.report_preparation"
+            name="crm_prospecting.report_preparation"
+        />
+    </data>
+</openerp>
