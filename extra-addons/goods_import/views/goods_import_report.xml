@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report
+            id="report_goodsimport"
+            string="État Dossier Import"
+            model="goods.import"
+            report_type="qweb-pdf"
+            file="goods_import.goodsimport"
+            name="goods_import.goodsimport"
+        />
+
+        <report
+            id="report_purchasequotation_grouped"
+            string="Demande de Prix avec Groupement"
+            model="purchase.order"
+            report_type="qweb-pdf"
+            file="goods_import.purchasequotation_grouped"
+            name="goods_import.purchasequotation_grouped"
+        />
+
+        <report
+            id="report_purchaseorder_grouped"
+            string="Bon de Commande avec Groupement"
+            model="purchase.order"
+            report_type="qweb-pdf"
+            file="goods_import.purchaseorder_grouped"
+            name="goods_import.purchaseorder_grouped"
+        />
+
+    </data>
+</openerp>
