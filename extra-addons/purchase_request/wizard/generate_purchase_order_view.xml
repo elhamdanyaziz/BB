@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="generate_purchase_form" model="ir.ui.view">
+            <field name="name">purchase.generate.order.form</field>
+            <field name="model">purchase.generate.order</field>
+            <field name="arch" type="xml">
+                <form string="Reservation" version="8.0">
+                    <p class="oe_grey">
+						Création une Demande de Prix.</p>
+                    <footer>
+                        <button name="create_purchase_order" string="Créer une Demande de Prix" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Annuler" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!--<record id="generate_purchase_action" model="ir.actions.act_window">-->
+            <!--<field name="name">Création Bon de Commande Achat</field>-->
+            <!--<field name="type">ir.actions.act_window</field>-->
+            <!--<field name="res_model">purchase.generate.order</field>-->
+            <!--<field name="view_type">form</field>-->
+            <!--<field name="view_mode">form</field>-->
+            <!--<field name="target">new</field>-->
+        <!--</record>-->
+
+        <act_window id="generate_purchase_action"
+			name="Créer une Demande de Prix "
+			res_model="purchase.generate.order"
+			src_model="purchase.request.line"
+			view_mode="form"
+			target ="new"
+			key2="client_action_multi"
+			groups=""
+			/>
+
+
+    </data>
+</openerp>

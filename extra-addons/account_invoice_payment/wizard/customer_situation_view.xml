@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="customer_situation_form" model="ir.ui.view">
+            <field name="name">customer.situation.form</field>
+            <field name="model">customer.situation</field>
+            <field name="arch" type="xml">
+                <form string="customer situation" version="8.0">
+                    <group colspan="2">
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+                    <footer>
+                        <button name="print_report" string="Imprimer Situation Client" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Annuler" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="customer_situation_action"
+			name="Imprimer Situation Client "
+			res_model="customer.situation"
+			src_model="res.partner"
+			view_mode="form"
+			target ="new"
+			key2="client_action_multi"
+			groups=""
+			/>
+
+
+    </data>
+</openerp>

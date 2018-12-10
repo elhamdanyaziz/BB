@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="customer_situation">
+
+            <t t-call="report.internal_layout">
+                <div class="page">
+
+                    <div class="oe_structure"/>
+
+
+                    <br></br>
+
+                    <div align="center" style="font-size: 20px; font-style: bold;">
+                        <h2>Situation Clients</h2>
+                        <h2>Periode</h2>
+                        <span><strong>DU: </strong><strong t-esc="time.strftime('%d/%m/%Y',time.strptime(data['form']['start_date'],'%Y-%m-%d'))"/><strong> AU: </strong><strong style="font-size: 20px; font-style: bold;" t-esc="time.strftime('%d/%m/%Y',time.strptime(data['form']['end_date'],'%Y-%m-%d'))"/></span>
+                    </div>
+
+                    <br></br><br></br>
+
+
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th class="th">Client</th>
+                                <th class="th">Facture</th>
+                                <th class="th">Monatnt</th>
+                                <th class="th">Réglement</th>
+                                <th class="th">Montant Réglement</th>
+                                <th class="th">Reste à payer</th>
+                                <th class="th">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody class="order_line">
+                            <tr t-foreach="data['form']['situation']" t-as="row">
+                                <td  class="td"><span t-esc="row['customer']"/></td>
+                                <td  class="td"><span t-esc="row['invoice']"/></td>
+                                <td  class="td text-right"><span t-esc="row['amount_invoice']"/></td>
+                                <td  class="td"><span t-esc="row['reglement']"/></td>
+                                <td class="td text-right"><span t-esc="row['amount_voucher']"/></td>
+                                <td class="td text-right"><span t-esc="row['amount_to_paid']"/></td>
+                                <td class="td"><span t-esc="row['description']"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </t>
+        </template>
+
+    </data>
+</openerp>
